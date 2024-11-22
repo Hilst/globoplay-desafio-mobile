@@ -8,15 +8,15 @@
 import SwiftUI
 
 struct ContentImageView: View {
-	let content: ContentViewData
+	let viewData: ContentViewData
 	let size: PosterSize
 
 	var body: some View {
-		AsyncImage(url: content.posterURL(size: size)) { phase in
+		AsyncImage(url: viewData.posterURL(size: size)) { phase in
 			if let image = phase.image {
 				image.resizable()
 			} else if phase.error != nil {
-				PlaceholderView(text: content.title)
+				PlaceholderView(text: viewData.title)
 			} else {
 				LoadingView()
 			}

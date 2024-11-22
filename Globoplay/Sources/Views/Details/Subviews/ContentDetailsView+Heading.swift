@@ -24,15 +24,6 @@ extension ContentDetailsView {
 	private struct ContentHeaderTextsView: View {
 		let viewData: ContentViewData
 
-//		func genresDescriptions() -> String {
-//			viewData
-//				.content
-//				.genreIds?
-//				.compactMap { Genres.genresMap[$0] }
-//				.joined(separator: ", ")
-//			?? String()
-//		}
-
 		func getPresentation() -> String? {
 			guard var presentationTitle = viewData.presentationTitle,
 				  let last = presentationTitle.last
@@ -45,7 +36,7 @@ extension ContentDetailsView {
 		}
 
 		var body: some View {
-			ContentImageView(content: viewData, size: .big)
+			ContentImageView(viewData: viewData, size: .big)
 				.padding(.bottom)
 			Text(viewData.title)
 				.font(.largeTitle)

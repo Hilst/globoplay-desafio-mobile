@@ -20,6 +20,14 @@ extension ContentDetailsItemsView {
 
 		@ViewBuilder
 		func view(viewData: ContentViewData) -> some View {
+			//		func genresDescriptions() -> String {
+			//			viewData
+			//				.content
+			//				.genreIds?
+			//				.compactMap { Genres.genresMap[$0] }
+			//				.joined(separator: ", ")
+			//			?? String()
+			//		}
 			Text(self.title + "content")
 		}
 

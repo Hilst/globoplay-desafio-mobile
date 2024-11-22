@@ -21,9 +21,6 @@ struct HomeView: View {
 				}
 			}
 		}
-		.navigationDestination(for: ContentViewData.self) { viewData in
-			ContentDetailsView(viewData: viewData)
-		}
 		.task {
 			try? await viewModel.updateContent()
 		}
@@ -44,7 +41,7 @@ extension HomeView {
 					LazyHStack(alignment: .center) {
 						ForEach(contents, id: \.content.id) { content in
 							NavigationLink(value: content) {
-								ContentImageView(content: content, size: .small)
+								ContentImageView(viewData: content, size: .small)
 									.padding(.horizontal, 3)
 							}
 						}
