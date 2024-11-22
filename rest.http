@@ -1,0 +1,25 @@
+@compid=13969
+
+###
+
+GET https://api.themoviedb.org/3/company/{{compid}}?api_key={{apikey}}&language=pt-BR&append_to_response=movies
+
+###
+
+GET https://api.themoviedb.org/3/company/{{compid}}/movies?api_key={{apikey}}&language=pt-BR
+
+###
+
+GET https://api.themoviedb.org/3/company/{{compid}}/tv?api_key={{apikey}}&language=pt-BR
+
+###
+
+GET https://api.themoviedb.org/3/genre/movie/list?api_key={{apikey}}&language=pt-BR
+
+###
+
+GET https://api.themoviedb.org/3/genre/tv/list?api_key={{apikey}}&language=pt-BR
+
+###
+
+GET https://api.themoviedb.org/3/movie/599/images?api_key={{apikey}}
