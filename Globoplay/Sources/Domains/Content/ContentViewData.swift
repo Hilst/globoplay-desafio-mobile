@@ -25,11 +25,13 @@ struct ContentViewData: Hashable {
 	let content: ContentModel
 	let title: String
 	private let posterPath: String?
+	let presentationTitle: String?
 
 	init(content: ContentModel) {
 		self.content = content
 		self.title = content.title ?? String()
 		self.posterPath = content.posterPath
+		self.presentationTitle = content.presentationTitle
 	}
 
 	func posterURL(size: PosterSize) -> URL? {

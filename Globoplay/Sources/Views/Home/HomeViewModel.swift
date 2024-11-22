@@ -36,14 +36,15 @@ final class HomeViewModel: ObservableObject {
 
 		let returnedMovies = try await DiscoverRequest(type: .movie).make()
 		returnedMovies.forEach { movie in
+			movie.presentationTitle = PresentationType.movie.title
 			presentations[.movie]?.nonRepeatingAppend(ContentViewData(content: movie))
 		}
 
 		let returnTVShows = try await DiscoverRequest(type: .tv).make()
 		returnTVShows.forEach { tvShow in
-			presentations[
-				tvShow.isSoap ? .soap : .tvshow
-			]?.nonRepeatingAppend(ContentViewData(content: tvShow))
+			let type: PresentationType = tvShow.isSoap ? .soap : .tvshow
+			tvShow.presentationTitle = type.title
+			presentations[type]?.nonRepeatingAppend(ContentViewData(content: tvShow))
 		}
 
 		let merged = contents.merging(presentations) { current, new in

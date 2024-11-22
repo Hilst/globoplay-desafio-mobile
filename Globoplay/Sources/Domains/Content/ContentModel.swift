@@ -15,6 +15,8 @@ final class ContentModel: Equatable {
 	var genreIds: [Int]?
 	var posterPath: String?
 
+	var presentationTitle: String?
+
 	var isSoap: Bool {
 		genreIds?.contains { $0 == PresentationType.soapGenreId } ?? false
 	}
