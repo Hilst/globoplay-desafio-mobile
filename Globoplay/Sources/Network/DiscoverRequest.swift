@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Wrapper: Decodable {
+struct ContentWrapper: Decodable {
 	let results: [ContentDTO]
 }
 
@@ -16,6 +16,7 @@ enum DiscoverType: String {
 }
 
 struct DiscoverRequest: Request {
+	typealias ReturnType = ContentWrapper
 	var method: RequestMethod?
 	
 	var timeout: Double?
@@ -27,12 +28,4 @@ struct DiscoverRequest: Request {
 		  "with_companies": Network.Constants.globoplayCompaniesIdsQuery ]
 	}
 	var isContentJson = true
-
-	func make() async throws -> [ContentModel] {
-		let data = try await Network.request(self)
-		let decoder = JSONDecoder()
-		decoder.keyDecodingStrategy = .convertFromSnakeCase
-		let decoded = try decoder.decode(Wrapper.self, from: data)
-		return decoded.results.map { ContentModel(dto: $0) }
-	}
 }

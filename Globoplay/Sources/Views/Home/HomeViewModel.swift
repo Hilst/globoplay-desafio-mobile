@@ -34,13 +34,19 @@ final class HomeViewModel: ObservableObject {
 	func updateContent() async throws {
 		var presentations: [PresentationType: [ContentViewData]] = Self.emptyContents()
 
-		let returnedMovies = try await DiscoverRequest(type: .movie).make()
+		let returnedMovies = try await DiscoverRequest(type: .movie)
+			.request()
+			.results
+			.lazy.map { ContentModel(dto: $0) }
 		returnedMovies.forEach { movie in
 			movie.presentationTitle = PresentationType.movie.title
 			presentations[.movie]?.nonRepeatingAppend(ContentViewData(content: movie))
 		}
 
-		let returnTVShows = try await DiscoverRequest(type: .tv).make()
+		let returnTVShows = try await DiscoverRequest(type: .tv)
+			.request()
+			.results
+			.lazy.map { ContentModel(dto: $0) }
 		returnTVShows.forEach { tvShow in
 			let type: PresentationType = tvShow.isSoap ? .soap : .tvshow
 			tvShow.presentationTitle = type.title
