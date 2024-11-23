@@ -14,7 +14,8 @@ struct HomeView: View {
 		ScrollView(.vertical) {
 			VStack(alignment: .leading) {
 				ForEach(PresentationType.allCases, id: \.title) { type in
-					if let contentsOfType = viewModel.contents[type] {
+					if let contentsOfType = viewModel.contents[type],
+					   !contentsOfType.isEmpty {
 						ContentTypeCarrosselView(type: type,
 												 contents: contentsOfType)
 					}

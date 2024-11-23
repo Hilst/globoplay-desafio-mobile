@@ -11,21 +11,28 @@ struct ContentWrapper: Decodable {
 	let results: [ContentDTO]
 }
 
-enum DiscoverType: String {
-	case tv, movie
-}
-
 struct DiscoverRequest: Request {
+	let type: PresentationType
+
 	typealias ReturnType = ContentWrapper
-	var method: RequestMethod?
-	
-	var timeout: Double?
-	
-	let type: DiscoverType
-	var path: [String]? { ["discover", type.rawValue] }
+
+	var path: [String]? { ["discover", type.apiString] }
+
 	var addtionalQuery: [String : String]? {
-		[ "sort_by": "popularity.desc",
-		  "with_companies": Network.Constants.globoplayCompaniesIdsQuery ]
+		var query = [
+			"sort_by": "popularity.desc",
+			"with_companies": Network.Constants.globoplayCompaniesIdsQuery
+		]
+		switch type {
+		case .tvshow:
+			query["without_genres"] = "\(PresentationType.soapGenreId)"
+		case .movie:
+			break
+		case .soap:
+			query["with_genres"] = "\(PresentationType.soapGenreId)"
+		}
+		return query
 	}
+
 	var isContentJson = true
 }

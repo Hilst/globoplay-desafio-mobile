@@ -24,7 +24,7 @@ GET https://api.themoviedb.org/3/movie/599/images?api_key={{apikey}}
 
 ### 
 
-GET https://api.themoviedb.org/3/discover/movie?api_key={{apikey}}&language=pt-BR
+GET https://api.themoviedb.org/3/discover/tv?api_key={{apikey}}&language=pt-BR&with_genres=10766&with_companies=79744|13969|186381|195816|193977|201057|201059|179074|192377|203962|46430|222282|229042|233438|205328|195815|181914|7462|196151|181587|206373
 
 ###
 
