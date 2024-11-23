@@ -7,39 +7,6 @@
 
 import SwiftUI
 
-final class SuggestionsViewModel: ObservableObject {
-	@Published var suggestedViewDatas = [ContentViewData]()
-
-	let originalContent: ContentModel
-
-	init(originalContentViewData: ContentViewData) {
-		self.originalContent = originalContentViewData.content
-	}
-
-	func getSuggestions() async throws {
-		 let suggestions = try await RecommendationsRequest(content: originalContent)
-			.requestAndTransform()
-			.prefix(6)
-			.map { ContentViewData(content: $0) }
-		await MainActor.run { suggestedViewDatas = Array(suggestions) }
-	}
-}
-
-struct SuggestionsView: View {
-	@ObservedObject var viewModel: SuggestionsViewModel
-
-	init(viewData: ContentViewData) {
-		viewModel = SuggestionsViewModel(originalContentViewData: viewData)
-	}
-
-	var body: some View {
-		ContentsGridView(viewDatas: viewModel.suggestedViewDatas)
-		.task {
-			try? await viewModel.getSuggestions()
-		}
-	}
-}
-
 extension ContentDetailsItemsView {
 	enum DetailsItem: Int, CaseIterable {
 		case suggestions, technicalDetails

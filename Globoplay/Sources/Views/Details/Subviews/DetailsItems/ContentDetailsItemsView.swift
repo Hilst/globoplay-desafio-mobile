@@ -28,8 +28,3 @@ struct ContentDetailsItemsView: View {
 		}
 	}
 }
-
-#Preview {
-	ContentDetailsItemsView(viewData: .init(content: .init(id: 598)))
-		.background(Color.black)
-}
