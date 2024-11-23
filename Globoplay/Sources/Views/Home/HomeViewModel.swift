@@ -45,9 +45,9 @@ final class HomeViewModel: ObservableObject {
 		try await saveContents(ofType: .tvshow, in: &newContents)
 		try await saveContents(ofType: .soap, in: &newContents)
 		let merged = contents.merging(newContents) { current, new in
-				var current = current
-				current.nonRepeatingAppend(contentsOf: new)
-				return current
+			var current = current
+			current.nonRepeatingAppend(contentsOf: new)
+			return current
 		}
 
 		await MainActor.run { contents = merged }
