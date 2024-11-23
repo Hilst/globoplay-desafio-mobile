@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum PresentationType: CaseIterable, Hashable, Equatable {
+enum PresentationType: Int, CaseIterable, Hashable, Equatable {
 	static let soapGenreId = 10766
 
 	case soap
@@ -58,9 +58,7 @@ final class HomeViewModel: ObservableObject {
 		in contentsMap: inout [PresentationType: [ContentViewData]]
 	) async throws {
 		async let contents = try await DiscoverRequest(type: type)
-			.request()
-			.results
-			.map { ContentModel(dto: $0) }
+			.requestAndTransform()
 			.map { ContentViewData(content: $0) }
 		try await contentsMap[type]?.nonRepeatingAppend(contentsOf: contents)
 	}

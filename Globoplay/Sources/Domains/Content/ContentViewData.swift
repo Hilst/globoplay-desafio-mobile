@@ -31,7 +31,12 @@ struct ContentViewData: Hashable {
 		self.content = content
 		self.title = content.title ?? String()
 		self.posterPath = content.posterPath
-		self.presentationTitle = content.presentationTitle
+		let typeId = content.presentation
+		var type: PresentationType? = nil
+		if let typeId {
+			type = PresentationType(rawValue: typeId)
+		}
+		self.presentationTitle = type?.title
 	}
 
 	func posterURL(size: PosterSize) -> URL? {

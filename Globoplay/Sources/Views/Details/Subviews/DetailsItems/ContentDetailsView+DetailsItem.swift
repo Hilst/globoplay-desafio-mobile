@@ -7,6 +7,39 @@
 
 import SwiftUI
 
+final class SuggestionsViewModel: ObservableObject {
+	@Published var suggestedViewDatas = [ContentViewData]()
+
+	let originalContent: ContentModel
+
+	init(originalContentViewData: ContentViewData) {
+		self.originalContent = originalContentViewData.content
+	}
+
+	func getSuggestions() async throws {
+		 let suggestions = try await RecommendationsRequest(content: originalContent)
+			.requestAndTransform()
+			.prefix(6)
+			.map { ContentViewData(content: $0) }
+		await MainActor.run { suggestedViewDatas = Array(suggestions) }
+	}
+}
+
+struct SuggestionsView: View {
+	@ObservedObject var viewModel: SuggestionsViewModel
+
+	init(viewData: ContentViewData) {
+		viewModel = SuggestionsViewModel(originalContentViewData: viewData)
+	}
+
+	var body: some View {
+		ContentsGridView(viewDatas: viewModel.suggestedViewDatas)
+		.task {
+			try? await viewModel.getSuggestions()
+		}
+	}
+}
+
 extension ContentDetailsItemsView {
 	enum DetailsItem: Int, CaseIterable {
 		case suggestions, technicalDetails
@@ -20,15 +53,20 @@ extension ContentDetailsItemsView {
 
 		@ViewBuilder
 		func view(viewData: ContentViewData) -> some View {
-			//		func genresDescriptions() -> String {
-			//			viewData
-			//				.content
-			//				.genreIds?
-			//				.compactMap { Genres.genresMap[$0] }
-			//				.joined(separator: ", ")
-			//			?? String()
-			//		}
-			Text(self.title + "content")
+			switch self {
+			case .suggestions:
+				SuggestionsView(viewData: viewData)
+			case .technicalDetails:
+				Text(self.title + "content")
+				//		func genresDescriptions() -> String {
+				//			viewData
+				//				.content
+				//				.genreIds?
+				//				.compactMap { Genres.genresMap[$0] }
+				//				.joined(separator: ", ")
+				//			?? String()
+				//		}
+			}
 		}
 
 		@ViewBuilder
@@ -48,7 +86,6 @@ extension ContentDetailsItemsView {
 								.foregroundStyle(.gray)
 						}
 					}
-					.padding(.vertical, 20)
 			}
 		}
 	}

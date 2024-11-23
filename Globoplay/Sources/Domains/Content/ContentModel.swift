@@ -13,18 +13,26 @@ final class ContentModel: Equatable {
 	var title: String?
 	var overview: String?
 	var genreIds: [Int]?
+	var originalLanguage: String?
 	var posterPath: String?
 
-	var presentationTitle: String?
+	var presentation: Int?
 
 	var isSoap: Bool {
 		genreIds?.contains { $0 == PresentationType.soapGenreId } ?? false
 	}
 
-	init(id: Int, title: String? = nil, genreIds: [Int]? = nil, posterPath: String? = nil) {
+	init(
+		id: Int,
+		title: String? = nil,
+		genreIds: [Int]? = nil,
+		originalLanguage: String? = nil,
+		posterPath: String? = nil
+	) {
 		self.id = id
 		self.title = title
 		self.genreIds = genreIds
+		self.originalLanguage = originalLanguage
 		self.posterPath = posterPath
 	}
 
@@ -34,6 +42,7 @@ final class ContentModel: Equatable {
 		self.title = dto.title ?? dto.name
 		self.overview = dto.overview
 		self.genreIds = dto.genreIds
+		self.originalLanguage = dto.originalLanguage
 		self.posterPath = dto.posterPath
 	}
 }
@@ -44,5 +53,6 @@ struct ContentDTO: Decodable {
 	let name: String?
 	let overview: String?
 	let genreIds: [Int]?
+	let originalLanguage: String?
 	let posterPath: String?
 }

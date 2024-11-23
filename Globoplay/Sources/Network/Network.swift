@@ -40,6 +40,12 @@ protocol Request {
 	func request() async throws -> ReturnType
 }
 
+protocol RequestWithTransformation: Request {
+	associatedtype TransformationResult
+	func transformation(_ returned: ReturnType) -> TransformationResult
+	func requestAndTransform() async throws -> TransformationResult
+}
+
 extension Request {
 	var path: [String]? { nil }
 	var additionalQuery: [String: String]? { nil }
@@ -83,5 +89,12 @@ extension Request {
 
 		let (data, _) = try await URLSession.shared.data(for: urlRequest)
 		return try decoder.decode(ReturnType.self, from: data)
+	}
+}
+
+extension RequestWithTransformation {
+	func requestAndTransform() async throws -> TransformationResult {
+		let returned = try await request()
+		return transformation(returned)
 	}
 }

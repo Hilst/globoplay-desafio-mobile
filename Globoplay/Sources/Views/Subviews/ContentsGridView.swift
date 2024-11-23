@@ -17,7 +17,6 @@ struct ContentsGridView: View {
 	]
 
 	var body: some View {
-		ScrollView {
 			LazyVGrid(columns: columns, spacing: 20) {
 				ForEach(viewDatas, id: \.content.id) { viewData in
 					NavigationLink(value: viewData) {
@@ -26,6 +25,5 @@ struct ContentsGridView: View {
 				}
 			}
 			.padding(.horizontal)
-		}
 	}
 }

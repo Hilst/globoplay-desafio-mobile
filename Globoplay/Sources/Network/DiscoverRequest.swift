@@ -11,7 +11,7 @@ struct ContentWrapper: Decodable {
 	let results: [ContentDTO]
 }
 
-struct DiscoverRequest: Request {
+struct DiscoverRequest: RequestWithTransformation {
 	let type: PresentationType
 
 	typealias ReturnType = ContentWrapper
@@ -35,4 +35,13 @@ struct DiscoverRequest: Request {
 	}
 
 	var isContentJson = true
+
+	typealias TransformationResult = [ContentModel]
+	func transformation(_ returned: ContentWrapper) -> [ContentModel] {
+		returned.results.map {
+			let model = ContentModel(dto: $0)
+			model.presentation = type.rawValue
+			return model
+		}
+	}
 }

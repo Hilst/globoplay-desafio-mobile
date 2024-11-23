@@ -12,7 +12,7 @@ struct ContentDetailsView: View {
 	let viewData: ContentViewData
 
 	var body: some View {
-		VStack {
+		ScrollView(.vertical){
 			VStack {
 				HStack {
 					Spacer()
@@ -20,6 +20,7 @@ struct ContentDetailsView: View {
 					Spacer()
 				}
 				ContentDetailsItemsView(viewData: viewData)
+					.background(.black)
 				Spacer()
 			}
 			.padding(.top)

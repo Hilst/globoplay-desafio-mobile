@@ -13,7 +13,7 @@ extension ContentDetailsView {
 		let gradient = LinearGradient(
 			gradient: Gradient(stops: [
 				.init(color: .clear, location: 0),
-				.init(color: .black, location: 0.85)
+				.init(color: .black, location: 0.45),
 			]),
 			startPoint: .top,
 			endPoint: .bottom

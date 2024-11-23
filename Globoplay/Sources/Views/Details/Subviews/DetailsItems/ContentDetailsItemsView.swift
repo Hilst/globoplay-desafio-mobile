@@ -13,13 +13,23 @@ struct ContentDetailsItemsView: View {
 	let viewData: ContentViewData
 
 	var body: some View {
-		HStack(alignment: .firstTextBaseline, spacing: 30) {
-			ForEach(DetailsItem.allCases, id: \.rawValue) { tabitem in
-				tabitem.pickerView(_selectedTab)
+		VStack {
+			HStack(alignment: .firstTextBaseline, spacing: 30) {
+				ForEach(DetailsItem.allCases, id: \.rawValue) { tabitem in
+					tabitem.pickerView(_selectedTab)
+				}
+				.padding(.vertical, 20)
+				.padding(.horizontal)
+				Spacer()
 			}
-			Spacer()
+			selectedTab.view(viewData: viewData)
+				.padding(.vertical)
+				.background(Color(.backgroung))
 		}
-		.padding(.horizontal)
-		selectedTab.view(viewData: viewData)
 	}
+}
+
+#Preview {
+	ContentDetailsItemsView(viewData: .init(content: .init(id: 598)))
+		.background(Color.black)
 }

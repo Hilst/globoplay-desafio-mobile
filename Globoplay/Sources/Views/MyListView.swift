@@ -11,8 +11,10 @@ struct MyListView: View {
 	@Query var contentsSaved: [ContentModel]
 
 	var body: some View {
-		ContentsGridView(viewDatas: contentsSaved.lazy.map {
-			ContentViewData(content: $0)
-		})
+		ScrollView {
+			ContentsGridView(viewDatas: contentsSaved.lazy.map {
+				ContentViewData(content: $0)
+			})
+		}
 	}
 }
