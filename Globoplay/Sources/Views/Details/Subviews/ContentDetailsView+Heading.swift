@@ -25,14 +25,8 @@ extension ContentDetailsView {
 		let viewData: ContentViewData
 
 		func getPresentation() -> String? {
-			guard var presentationTitle = viewData.presentationTitle,
-				  let last = presentationTitle.last
-			else { return nil }
-			let isPlural = last == "s"
-			if isPlural {
-				presentationTitle = String(presentationTitle.dropLast())
-			}
-			return presentationTitle
+			guard let presentationTitle = viewData.presentationTitle else { return nil }
+			return presentationTitle.asSimpleSingular()
 		}
 
 		var body: some View {
