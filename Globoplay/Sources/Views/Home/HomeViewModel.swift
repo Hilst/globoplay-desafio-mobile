@@ -21,6 +21,14 @@ enum PresentationType: CaseIterable, Hashable, Equatable {
 		case .movie: "Cinema"
 		}
 	}
+
+	var apiString: String {
+		switch self {
+		case .soap: "tv"
+		case .tvshow: "tv"
+		case .movie: "movie"
+		}
+	}
 }
 
 final class HomeViewModel: ObservableObject {
@@ -34,24 +42,34 @@ final class HomeViewModel: ObservableObject {
 	func updateContent() async throws {
 		var presentations: [PresentationType: [ContentViewData]] = Self.emptyContents()
 
-		let returnedMovies = try await DiscoverRequest(type: .movie)
+		async let returnedMovies = try await DiscoverRequest(type: .movie)
 			.request()
 			.results
 			.lazy.map { ContentModel(dto: $0) }
-		returnedMovies.forEach { movie in
+		try await returnedMovies.forEach { movie in
 			movie.presentationTitle = PresentationType.movie.title
 			presentations[.movie]?.nonRepeatingAppend(ContentViewData(content: movie))
 		}
 
-		let returnTVShows = try await DiscoverRequest(type: .tv)
+		async let returnTVShows = try await DiscoverRequest(type: .tvshow)
 			.request()
 			.results
 			.lazy.map { ContentModel(dto: $0) }
-		returnTVShows.forEach { tvShow in
-			let type: PresentationType = tvShow.isSoap ? .soap : .tvshow
-			tvShow.presentationTitle = type.title
-			presentations[type]?.nonRepeatingAppend(ContentViewData(content: tvShow))
+		try await returnTVShows.forEach { tvShow in
+			tvShow.presentationTitle = PresentationType.tvshow.title
+			presentations[.tvshow]?.nonRepeatingAppend(ContentViewData(content: tvShow))
 		}
+
+		async let returnSoap = try await DiscoverRequest(type: .soap)
+			.request()
+			.results
+			.lazy.map { ContentModel(dto: $0) }
+		try await returnSoap.forEach { tvShow in
+			tvShow.presentationTitle = PresentationType.soap.title
+			presentations[.soap]?.nonRepeatingAppend(ContentViewData(content: tvShow))
+		}
+
+		allContents = try await withThrowingTaskGroup(of: [ContentModel])
 
 		let merged = contents.merging(presentations) { current, new in
 				var current = current
