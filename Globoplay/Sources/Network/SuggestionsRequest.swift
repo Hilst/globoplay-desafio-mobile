@@ -30,15 +30,15 @@ struct RecommendationsRequest: RequestWithTransformation {
 			.results
 			.compactMap {
 				let model = ContentModel(dto: $0)
-				model.presentation = Self.newPresentation(newModel: model)?.rawValue
+				model.presentation = newPresentation(newModel: model)?.rawValue
 				guard model.originalLanguage == "pt" else { return nil }
 				return model
 			}
 	}
 
-	private static func newPresentation(newModel model: ContentModel) -> PresentationType? {
+	private func newPresentation(newModel model: ContentModel) -> PresentationType? {
 		guard !model.isSoap else { return .soap }
-		guard let originTypeId = model.presentation,
+		guard let originTypeId = content.presentation,
 			  let type = PresentationType(rawValue: originTypeId)
 		else { return nil }
 		return type
