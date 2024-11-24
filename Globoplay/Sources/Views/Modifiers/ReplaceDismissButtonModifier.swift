@@ -20,7 +20,8 @@ struct ReplaceDismissButton: ViewModifier {
 			Button {
 				dismiss()
 			} label: {
-				Image(systemName: "arrow.left")
+				Image(.arrowIcon)
+					.foregroundStyle(.white)
 			}
 		}
 	}

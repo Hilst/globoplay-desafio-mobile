@@ -14,7 +14,8 @@ extension ContentDetailsView {
 			Button {
 				print("assita")
 			} label: {
-				Label("Assista", systemImage: "play.fill")
+				Label("Assista", image: .playIcon)
+					.foregroundStyle(.gray)
 			}
 			.primary()
 		}
@@ -23,7 +24,6 @@ extension ContentDetailsView {
 
 extension ContentDetailsView {
 	struct FavoriteButton: View {
-		typealias FavoriteButtonType = Button<Label<Text, Image>>
 		@Environment(\.modelContext) var context
 
 		let contentModel: ContentModel
@@ -35,26 +35,23 @@ extension ContentDetailsView {
 				.contains(contentModel.id)
 		}
 
-		private func InListButton() -> FavoriteButtonType {
-			Button {
-				context.delete(contentModel)
-			} label: {
-				Label("Adicionado", systemImage: "checkmark")
-			}
+		private func buttonAction() {
+			isSaved ? context.delete(contentModel) : context.insert(contentModel)
 		}
 
-		private func AddListButton() -> FavoriteButtonType {
-			Button {
-				context.insert(contentModel)
-			} label: {
-				Label("Minha lista", systemImage: "star.fill")
-			}
+		private func buttonLabel() -> some View {
+			Label(
+				isSaved ? "Adicionado" : "Minha lista",
+				image: isSaved ? .checkIcon : .starIcon
+			)
 		}
 
 		var body: some View {
-			let buttonBuilder = isSaved ? InListButton : AddListButton
-			buttonBuilder()
-				.primary(stroked: true)
+			Button(
+				action: buttonAction,
+				label: buttonLabel
+			)
+			.primary(stroked: true)
 		}
 	}
 }

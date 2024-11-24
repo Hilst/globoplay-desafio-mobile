@@ -19,8 +19,9 @@ struct ContentView: View {
 					.routeToContentViewDetails()
 			}
 			.tabItem {
-				Label("Início", systemImage: "house.fill")
-					.font(.caption2)
+				Label("Início", image: .homeIcon)
+					.font(.caption)
+					.foregroundStyle(.gray)
 			}
 
 			NavigationStack {
@@ -28,8 +29,9 @@ struct ContentView: View {
 					.routeToContentViewDetails()
 			}
 			.tabItem {
-				Label("Minha lista", systemImage: "star.fill")
-					.font(.caption2)
+				Label("Minha lista", image: .starIcon)
+					.font(.caption)
+					.foregroundStyle(.gray)
 			}
 		}
 	}
