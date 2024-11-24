@@ -65,4 +65,4 @@ Aqui o uso está sendo aplicado pelo script [gen_secrets.sh](./../scripts/secret
 
 ## Resultado
 
-<video src='./../result-recording/demo.MP4' width=180/>
+[demonstração](https://youtube.com/shorts/svsFLSOralg?feature=share)
