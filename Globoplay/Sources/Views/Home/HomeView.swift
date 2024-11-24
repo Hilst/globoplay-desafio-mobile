@@ -39,7 +39,7 @@ extension HomeView {
 		var body: some View {
 			HStack {
 				Spacer()
-				Image("logo")
+				Image(.logo)
 					.resizable()
 					.aspectRatio(contentMode: .fill)
 					.foregroundStyle(.white)

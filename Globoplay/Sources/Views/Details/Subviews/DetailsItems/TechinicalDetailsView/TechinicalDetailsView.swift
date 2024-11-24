@@ -15,7 +15,7 @@ struct TechnicalDetailsView: View {
 
 	var body: some View {
 		VStack(alignment: .leading) {
-			Text("Ficha técnica")
+			Text("technical.view.title")
 				.foregroundStyle(.white)
 				.font(.title2)
 				.fontWeight(.bold)

@@ -35,9 +35,14 @@ struct SpecifDetailsModel {
 		self.numberOfEpisodes = dto.numberOfEpisodes
 		self.firstOriginCountry = dto.originCountry?.first
 		self.directorsNames = dto.credits?.crew?
-			.filter { $0.job == "Director" }
+			.filter(Self.isDirector)
 			.compactMap { $0.name }
 		self.castNames = dto.credits?.cast?
 			.compactMap { $0.name }
+	}
+
+	static let directorJobString = "Director"
+	private static func isDirector(_ crew: SpecifDetailsDTO.CreditsDTO.CrewDTO) -> Bool {
+		crew.job == directorJobString
 	}
 }

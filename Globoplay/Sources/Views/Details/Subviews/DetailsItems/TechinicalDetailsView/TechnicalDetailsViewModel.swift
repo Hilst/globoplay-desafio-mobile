@@ -10,24 +10,26 @@ import SwiftUI
 final class TechnicalDetailsViewModel: ObservableObject {
 	enum TechnicalDetailsItem {
 		case originalTile(String?)
-		case genersConcatened([Int]?)
+		case genresConcatened([Int]?)
 		case episodesNumber(Int?)
 		case yearOfProduction(Int?)
 		case country(String?)
 		case directorsNames([String]?)
 		case castConcatened([String]?)
 
-		var label: String {
+		private var localizationKey: String {
 			switch self {
-			case .originalTile: "Título Original"
-			case .genersConcatened: "Gênero"
-			case .episodesNumber: "Episódios"
-			case .yearOfProduction: "Ano de Produção"
-			case .country: "País"
-			case .directorsNames: "Direção"
-			case .castConcatened: "Elenco"
+			case .originalTile: "techdetail.label.originaltitle"// "Título Original"
+			case .genresConcatened: "techdetail.label.genre" //"Gênero"
+			case .episodesNumber:"techdetail.label.episodesnum" // "Episódios"
+			case .yearOfProduction:"techdetail.label.year" // "Ano de Produção"
+			case .country:"techdetail.label.country" // "País"
+			case .directorsNames: "techdetail.label.directors" // "Direção"
+			case .castConcatened: "techdetail.label.cast" // "Elenco"
 			}
 		}
+
+		var label: String { String(localizationKey: localizationKey) }
 	}
 
 	@Published var items = [AttributedString]()
@@ -54,7 +56,7 @@ final class TechnicalDetailsViewModel: ObservableObject {
 
 		await updateItems(with: [
 			.originalTile(viewData.content.originalTitle),
-			.genersConcatened(viewData.content.genreIds),
+			.genresConcatened(viewData.content.genreIds),
 			.episodesNumber(details?.numberOfEpisodes),
 			.yearOfProduction(productionYear),
 			.country(details?.firstOriginCountry),
@@ -74,7 +76,7 @@ final class TechnicalDetailsViewModel: ObservableObject {
 
 	private func toText(item: TechnicalDetailsItem) -> String? {
 		switch item {
-		case .genersConcatened(let genres):
+		case .genresConcatened(let genres):
 			guard let genres, !genres.isEmpty else { return nil }
 			return genres
 				.compactMap { Genres.genresMap[$0] }

@@ -11,12 +11,14 @@ extension ContentDetailsItemsView {
 	enum DetailsItem: Int, CaseIterable {
 		case suggestions, technicalDetails
 
-		var title: String {
+		private var localizationKey: String {
 			switch self {
-			case .suggestions: "ASSISTA TAMBÉM"
-			case .technicalDetails: "DETALHES"
+			case .suggestions: "suggestions.picker.value" // "ASSISTA TAMBÉM"
+			case .technicalDetails: "techdetails.picker.value" // "DETALHES"
 			}
 		}
+
+		var title: String { String(localizationKey: self.localizationKey) }
 
 		@ViewBuilder
 		func view(viewData: ContentViewData) -> some View {

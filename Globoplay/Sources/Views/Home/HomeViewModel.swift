@@ -15,11 +15,16 @@ enum PresentationType: Int, CaseIterable, Hashable, Equatable {
 	case movie
 
 	var title: String {
+		let localizationKey: String
 		switch self {
-		case .soap: "Novelas"
-		case .tvshow: "Séries"
-		case .movie: "Cinema"
+		case .soap:
+			localizationKey = "soap.show.title"
+		case .tvshow:
+			localizationKey = "tvshow.show.title"
+		case .movie:
+			localizationKey = "movies.show.title"
 		}
+		return String(localizationKey: localizationKey)
 	}
 
 	var apiString: String {

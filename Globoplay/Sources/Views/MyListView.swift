@@ -30,7 +30,7 @@ extension MyListView {
 	private struct Header: View {
 		var body: some View {
 			HStack {
-				Text("Minha lista")
+				Text("list.view.title")
 					.foregroundStyle(.white)
 					.font(.title)
 					.fontWeight(.bold)

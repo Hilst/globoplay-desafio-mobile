@@ -19,7 +19,7 @@ struct ContentView: View {
 					.routeToContentViewDetails()
 			}
 			.tabItem {
-				Label("Início", image: .homeIcon)
+				Label("home.toolbar.item", image: .homeIcon)
 					.font(.caption)
 					.foregroundStyle(.gray)
 			}
@@ -29,7 +29,7 @@ struct ContentView: View {
 					.routeToContentViewDetails()
 			}
 			.tabItem {
-				Label("Minha lista", image: .starIcon)
+				Label("list.toolbar.item", image: .starIcon)
 					.font(.caption)
 					.foregroundStyle(.gray)
 			}

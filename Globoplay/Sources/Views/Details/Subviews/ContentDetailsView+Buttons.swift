@@ -14,7 +14,7 @@ extension ContentDetailsView {
 			Button {
 				print("assita")
 			} label: {
-				Label("Assista", image: .playIcon)
+				Label("details.button.watch", image: .playIcon)
 					.foregroundStyle(.gray)
 			}
 			.primary()
@@ -41,7 +41,7 @@ extension ContentDetailsView {
 
 		private func buttonLabel() -> some View {
 			Label(
-				isSaved ? "Adicionado" : "Minha lista",
+				isSaved ? "details.button.added" : "details.button.add",
 				image: isSaved ? .checkIcon : .starIcon
 			)
 		}
