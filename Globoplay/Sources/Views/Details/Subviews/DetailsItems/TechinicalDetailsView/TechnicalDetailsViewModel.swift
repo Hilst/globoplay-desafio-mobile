@@ -85,9 +85,12 @@ final class TechnicalDetailsViewModel: ObservableObject {
 			guard let number else { return nil }
 			return number.description
 
-		case .originalTile(let string): fallthrough
-		case .country(let string):
+		case .originalTile(let string):
 			return string
+
+		case .country(let country):
+			guard let country else { return nil }
+			return Countries.countriesMap[country]
 
 		case .directorsNames(let names): fallthrough
 		case .castConcatened(let names):
