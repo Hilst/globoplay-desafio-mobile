@@ -10,11 +10,26 @@ import SwiftUI
 struct ContentsGridView: View {
 	let viewDatas: [ContentViewData]
 
-	let columns = [
-		GridItem(.flexible()),
-		GridItem(.flexible()),
-		GridItem(.flexible()),
-	]
+	@State private var columns = [GridItem](repeating: GridItem(.flexible()),
+											count: 3)
+
+	private func updateGridItemsSize(
+		orientation: UIDeviceOrientation = UIDevice.current.orientation
+	) {
+		let current = columns.count
+		var itemInARow = current
+		switch orientation {
+		case .landscapeLeft: fallthrough
+		case .landscapeRight:
+			itemInARow = 6
+		case .portrait:
+			itemInARow = 3
+		default:
+			break
+		}
+		columns = [GridItem](repeating: GridItem(.flexible()),
+							 count: itemInARow)
+	}
 
 	var body: some View {
 			LazyVGrid(columns: columns, spacing: 20) {
@@ -23,6 +38,9 @@ struct ContentsGridView: View {
 						ContentImageView(viewData: viewData, size: .small)
 					}
 				}
+			}
+			.onRotate { _ in
+				updateGridItemsSize()
 			}
 			.padding(.horizontal)
 	}

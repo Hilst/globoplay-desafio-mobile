@@ -22,13 +22,14 @@ struct HomeView: View {
 						}
 					}
 				}
+				.padding(.leading)
+				.padding(.bottom)
 			}
 			.scrollBounceBehavior(.basedOnSize)
 			.task {
 				try? await viewModel.updateContent()
 			}
 			.background(Color(.backgroung))
-			Spacer()
 		}
 	}
 }
@@ -57,9 +58,10 @@ extension HomeView {
 		let contents: [ContentViewData]
 
 		var body: some View {
-			VStack(alignment: .leading, spacing: 10) {
+			VStack(alignment: .leading, spacing: 20) {
 				Text(type.title)
 					.font(.title)
+					.fontWeight(.bold)
 				ScrollView(.horizontal) {
 					LazyHStack(alignment: .center) {
 						ForEach(contents, id: \.content.id) { content in
@@ -71,6 +73,7 @@ extension HomeView {
 					}
 				}
 			}
+			.padding(.top, 30)
 		}
 	}
 }

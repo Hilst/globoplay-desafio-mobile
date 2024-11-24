@@ -7,6 +7,12 @@
 
 import SwiftUI
 
+extension Button {
+	func primary(stroked: Bool = false) -> some View {
+		modifier(PrimaryButtonModifier(stroke: stroked))
+	}
+}
+
 struct PrimaryButtonModifier: ViewModifier {
 	let stroke: Bool
 
@@ -33,12 +39,6 @@ struct PrimaryButtonModifier: ViewModifier {
 			.foregroundStyle(.tint)
 			.background(Background())
 			.tint(.gray)
-	}
-}
-
-extension Button {
-	func primary(stroked: Bool = false) -> some View {
-		modifier(PrimaryButtonModifier(stroke: stroked))
 	}
 }
 
