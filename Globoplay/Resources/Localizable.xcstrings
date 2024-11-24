@@ -69,6 +69,9 @@
         }
       }
     },
+    "empty.message" : {
+
+    },
     "home.toolbar.item" : {
       "extractionState" : "manual",
       "localizations" : {

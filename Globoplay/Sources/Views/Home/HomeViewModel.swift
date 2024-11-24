@@ -37,14 +37,18 @@ enum PresentationType: Int, CaseIterable, Hashable, Equatable {
 }
 
 final class HomeViewModel: ObservableObject {
+	typealias ContentsMap = [PresentationType: [ContentViewData]]
+	@Published var contents: ContentsMap  = emptyContents()
+	var isLoading = true
+	var isEmpty = true
 
-	@Published var contents: [PresentationType: [ContentViewData]] = emptyContents()
-
-	private static func emptyContents() -> [PresentationType: [ContentViewData]] {
+	private static func emptyContents() -> ContentsMap {
 		[.movie: [], .soap: [], .tvshow: []]
 	}
 
 	func updateContent() async throws {
+		await MainActor.run { isLoading = true }
+
 		var newContents = Self.emptyContents()
 		try await saveContents(ofType: .movie, in: &newContents)
 		try await saveContents(ofType: .tvshow, in: &newContents)
@@ -55,7 +59,15 @@ final class HomeViewModel: ObservableObject {
 			return current
 		}
 
-		await MainActor.run { contents = merged }
+		await MainActor.run {
+			endState(with: merged)
+		}
+	}
+
+	private func endState(with endContents: ContentsMap) {
+		isEmpty = endContents.isEmpty
+		contents = endContents
+		isLoading = false
 	}
 
 	private func saveContents(

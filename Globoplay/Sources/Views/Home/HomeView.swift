@@ -9,6 +9,7 @@ import SwiftUI
 
 struct HomeView: View {
 	@ObservedObject var viewModel = HomeViewModel()
+	@State var madeFetch = false
 
 	var body: some View {
 		VStack {
@@ -26,11 +27,37 @@ struct HomeView: View {
 				.padding(.bottom)
 			}
 			.scrollBounceBehavior(.basedOnSize)
-			.task {
-				try? await viewModel.updateContent()
-			}
 			.background(Color(.backgroung))
 		}
+		.overlay(alignment: .topLeading) {
+			activityView()
+		}
+		.task(id: madeFetch) {
+			if !madeFetch {
+				try? await viewModel.updateContent()
+				madeFetch = true
+			}
+		}
+	}
+}
+
+extension HomeView {
+	private func activityView() -> some View {
+		Group {
+			if viewModel.isLoading, viewModel.isEmpty {
+				ProgressView()
+					.progressViewStyle(.circular)
+					.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+			} else if viewModel.isEmpty, !viewModel.isLoading {
+				Text("empty.message")
+					.font(.callout)
+					.fontWeight(.semibold)
+					.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+			} else {
+				EmptyView()
+			}
+		}
+		.background(Color(.backgroung))
 	}
 }
 
