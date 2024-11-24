@@ -9,24 +9,45 @@ import SwiftUI
 
 struct HomeView: View {
 	@ObservedObject var viewModel = HomeViewModel()
-	
+
 	var body: some View {
-		ScrollView(.vertical) {
-			VStack(alignment: .leading) {
-				ForEach(PresentationType.allCases, id: \.title) { type in
-					if let contentsOfType = viewModel.contents[type],
-					   !contentsOfType.isEmpty {
-						ContentTypeCarrosselView(type: type,
-												 contents: contentsOfType)
+		VStack {
+			Header()
+			ScrollView(.vertical) {
+				VStack(alignment: .leading) {
+					ForEach(PresentationType.allCases, id: \.title) { type in
+						if let contentsOfType = viewModel.contents[type],
+						   !contentsOfType.isEmpty {
+							ContentTypeCarrosselView(type: type, contents: contentsOfType)
+						}
 					}
 				}
 			}
+			.scrollBounceBehavior(.basedOnSize)
+			.task {
+				try? await viewModel.updateContent()
+			}
+			.background(Color(.backgroung))
+			Spacer()
 		}
-		.scrollBounceBehavior(.basedOnSize)
-		.task {
-			try? await viewModel.updateContent()
+	}
+}
+
+extension HomeView {
+	private struct Header: View {
+		var body: some View {
+			HStack {
+				Spacer()
+				Image("logo")
+					.resizable()
+					.aspectRatio(contentMode: .fill)
+					.foregroundStyle(.white)
+					.frame(width: 200, height: 100)
+					.clipped()
+				Spacer()
+			}
+			.background(Color.black)
 		}
-		.background(Color(.backgroung))
 	}
 }
 
