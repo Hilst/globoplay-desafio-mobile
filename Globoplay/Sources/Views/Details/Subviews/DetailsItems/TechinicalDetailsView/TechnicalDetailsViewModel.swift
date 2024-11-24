@@ -33,6 +33,8 @@ final class TechnicalDetailsViewModel: ObservableObject {
 	}
 
 	@Published var items = [AttributedString]()
+	@Published var isLoading = true
+	@Published var isEmpty = true
 	let viewData: ContentViewData
 
 	private static let formatter: DateFormatter = {
@@ -46,6 +48,8 @@ final class TechnicalDetailsViewModel: ObservableObject {
 	}
 
 	func updateDetails() async throws {
+		await MainActor.run { isLoading = true }
+
 		async let details = try? await SpecifDetailsRequest(content: viewData.content).requestAndTransform()
 
 		var productionYear: Int? = nil
@@ -71,6 +75,8 @@ final class TechnicalDetailsViewModel: ObservableObject {
 				guard let textValue = toText(item: item) else { return nil }
 				return try? AttributedString(markdown: "**\(item.label):** \(textValue)")
 			}
+			isEmpty = items.isEmpty
+			isLoading = false
 		}
 	}
 

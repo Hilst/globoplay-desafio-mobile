@@ -39,8 +39,8 @@ enum PresentationType: Int, CaseIterable, Hashable, Equatable {
 final class HomeViewModel: ObservableObject {
 	typealias ContentsMap = [PresentationType: [ContentViewData]]
 	@Published var contents: ContentsMap  = emptyContents()
-	var isLoading = true
-	var isEmpty = true
+	@Published var isLoading = true
+	@Published var isEmpty = true
 
 	private static func emptyContents() -> ContentsMap {
 		[.movie: [], .soap: [], .tvshow: []]
@@ -60,14 +60,10 @@ final class HomeViewModel: ObservableObject {
 		}
 
 		await MainActor.run {
-			endState(with: merged)
+			isEmpty = merged.isEmpty
+			contents = merged
+			isLoading = false
 		}
-	}
-
-	private func endState(with endContents: ContentsMap) {
-		isEmpty = endContents.isEmpty
-		contents = endContents
-		isLoading = false
 	}
 
 	private func saveContents(

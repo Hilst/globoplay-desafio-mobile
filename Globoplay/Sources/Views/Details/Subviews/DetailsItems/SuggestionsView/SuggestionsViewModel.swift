@@ -9,6 +9,8 @@ import SwiftUI
 
 final class SuggestionsViewModel: ObservableObject {
 	@Published var suggestedViewDatas = [ContentViewData]()
+	@Published var isLoading = true
+	@Published var isEmpty = true
 
 	let originalContent: ContentModel
 
@@ -17,10 +19,18 @@ final class SuggestionsViewModel: ObservableObject {
 	}
 
 	func getSuggestions() async throws {
-		 let suggestions = try await RecommendationsRequest(content: originalContent)
+		await MainActor.run { isLoading = true }
+
+		let suggestions = try await RecommendationsRequest(content: originalContent)
 			.requestAndTransform()
 			.prefix(6)
 			.map { ContentViewData(content: $0) }
-		await MainActor.run { suggestedViewDatas = Array(suggestions) }
+			.asArray()
+
+		await MainActor.run {
+			isEmpty = suggestions.isEmpty
+			suggestedViewDatas = suggestions
+			isLoading = false
+		}
 	}
 }

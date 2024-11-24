@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TechnicalDetailsView: View {
 	@ObservedObject var viewModel: TechnicalDetailsViewModel
+	@State var madeFetch = false
 	init(viewData: ContentViewData) {
 		viewModel = TechnicalDetailsViewModel(viewData: viewData)
 	}
@@ -29,9 +30,33 @@ struct TechnicalDetailsView: View {
 			.padding(.horizontal)
 			Spacer()
 		}
+		.overlay(alignment: .topLeading) {
+			activityView()
+		}
 		.containerRelativeFrame([.horizontal], alignment: .topLeading)
 		.task {
-			try? await viewModel.updateDetails()
+			if !madeFetch {
+				try? await viewModel.updateDetails()
+				madeFetch = true
+			}
 		}
+	}
+
+	private func activityView() -> some View {
+		Group {
+			if viewModel.isLoading, viewModel.isEmpty {
+				ProgressView()
+					.progressViewStyle(.circular)
+					.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+			} else if viewModel.isEmpty, !viewModel.isLoading {
+				Text("techdetails.empty.message")
+					.font(.callout)
+					.fontWeight(.semibold)
+					.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+			} else {
+				EmptyView()
+			}
+		}
+		.background(Color(.backgroung))
 	}
 }

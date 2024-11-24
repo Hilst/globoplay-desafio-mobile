@@ -49,7 +49,7 @@ extension HomeView {
 					.progressViewStyle(.circular)
 					.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
 			} else if viewModel.isEmpty, !viewModel.isLoading {
-				Text("empty.message")
+				Text("home.empty.message")
 					.font(.callout)
 					.fontWeight(.semibold)
 					.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)

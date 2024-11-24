@@ -69,8 +69,21 @@
         }
       }
     },
-    "empty.message" : {
-
+    "home.empty.message" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We could not find any medio to present to you "
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não conseguimos encontrar nenhuma conteúdo para exibição"
+          }
+        }
+      }
     },
     "home.toolbar.item" : {
       "extractionState" : "manual",
@@ -153,6 +166,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Novela"
+          }
+        }
+      }
+    },
+    "suggestions.empty.message" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We could not find recommendations to this media"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não encontramos sugestões para este conteúdo"
           }
         }
       }
@@ -289,6 +318,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ano de produção"
+          }
+        }
+      }
+    },
+    "techdetails.empty.message" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We could not find the technical details of this media"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não conseguimos recuperar a ficha técnica deste conteúdo"
           }
         }
       }
