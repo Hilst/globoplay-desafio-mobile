@@ -22,6 +22,7 @@ struct HomeView: View {
 				}
 			}
 		}
+		.scrollBounceBehavior(.basedOnSize)
 		.task {
 			try? await viewModel.updateContent()
 		}

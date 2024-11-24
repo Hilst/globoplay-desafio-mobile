@@ -25,6 +25,7 @@ struct ContentDetailsView: View {
 			}
 			.padding(.top)
 		}
+		.scrollBounceBehavior(.basedOnSize)
 		.background(BackgroundView(viewData: viewData))
 		.replaceDismissButton()
 	}
