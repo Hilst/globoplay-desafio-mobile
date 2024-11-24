@@ -26,7 +26,7 @@ enum RequestMethod: String {
 }
 
 enum RequestError: Error {
-	case invalidURL
+	case invalidURL, requestError(Error), decodeError(Error)
 }
 
 protocol Request {
@@ -87,8 +87,16 @@ extension Request {
 			urlRequest.allHTTPHeaderFields = ["accept": "application/json"]
 		}
 
-		let (data, _) = try await URLSession.shared.data(for: urlRequest)
-		return try decoder.decode(ReturnType.self, from: data)
+		do {
+			let (data, _) = try await URLSession.shared.data(for: urlRequest)
+			#if DEBUG
+			print(String(decoding: data, as: UTF8.self))
+			#endif
+			return try decoder.decode(ReturnType.self, from: data)
+		} catch (let error) {
+			debugPrint(self, error)
+			throw error
+		}
 	}
 }
 

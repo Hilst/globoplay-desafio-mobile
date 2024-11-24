@@ -21,15 +21,15 @@ final class SuggestionsViewModel: ObservableObject {
 	func getSuggestions() async throws {
 		await MainActor.run { isLoading = true }
 
-		let suggestions = try await RecommendationsRequest(content: originalContent)
+		let suggestions = try? await RecommendationsRequest(content: originalContent)
 			.requestAndTransform()
 			.prefix(6)
 			.map { ContentViewData(content: $0) }
 			.asArray()
 
 		await MainActor.run {
-			isEmpty = suggestions.isEmpty
-			suggestedViewDatas = suggestions
+			suggestedViewDatas = suggestions ?? []
+			isEmpty = suggestedViewDatas.isEmpty
 			isLoading = false
 		}
 	}
