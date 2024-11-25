@@ -5,18 +5,18 @@
 //  Created by Felipe Hilst on 23/11/24.
 //
 
-struct SpecifDetailsDTO: Decodable {
+struct SpecifDetailsDTO: Codable {
 	let id: Int
 	let numberOfEpisodes: Int?
 	let originCountry: [String]?
 	let credits: CreditsDTO?
-	struct CreditsDTO: Decodable {
+	struct CreditsDTO: Codable {
 		let cast: [CastDTO]?
-		struct CastDTO: Decodable {
+		struct CastDTO: Codable {
 			let name: String?
 		}
 		let crew: [CrewDTO]?
-		struct CrewDTO: Decodable {
+		struct CrewDTO: Codable {
 			let name: String?
 			let job: String?
 		}
