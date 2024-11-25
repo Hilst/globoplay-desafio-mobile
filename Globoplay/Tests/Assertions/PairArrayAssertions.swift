@@ -30,6 +30,17 @@ extension Array where Element: Equatable {
 			XCTAssertEqual(first, second)
 		}
 	}
+
+	func zipPair() -> [[Element.Element]] where Element: Sequence {
+		guard self.count == 2 else {
+			XCTFail("Can only compare pairs")
+			return []
+		}
+
+		let first = self[0]
+		let second = self[1]
+		return zip(first, second).map { [$0.0, $0.1] }
+	}
 }
 
 extension Array where Element == ContentModel  {
@@ -44,4 +55,24 @@ extension Array where Element == ContentModel  {
 		self.map { $0.genreIds }.assertPair("\(messagePrefix) genres ids")
 		self.map { $0.posterPath }.assertPair("\(messagePrefix) poster paths")
 	}
+}
+
+extension Array where Element == URLRequest {
+	func assert(_ messagePrefix: String? = nil) {
+		let messagePrefix = messagePrefix ?? "URLRequest:"
+		let components = self.compactMap { $0.url }.compactMap { URLComponents(url: $0, resolvingAgainstBaseURL: false) }
+		components.map { $0.scheme }.assertPair("\(messagePrefix) schema")
+		components.map { $0.host }.assertPair("\(messagePrefix) host")
+		components.map { $0.path }.assertPair("\(messagePrefix) path")
+		components
+			.map { $0.queryItems?.sorted(by: { $0.name > $1.name }) ?? [] }
+			.zipPair()
+			.forEach { itemPair in
+				itemPair.map { $0.name }.assertPair("query item name")
+				itemPair.map { $0.value }.assertPair("query item value")
+			}
+		self.compactMap { $0.httpMethod }.assertPair("\(messagePrefix) method")
+		self.compactMap { $0.allHTTPHeaderFields }.assertPair("\(messagePrefix) headers")
+	}
+
 }
