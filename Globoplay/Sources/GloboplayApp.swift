@@ -20,6 +20,10 @@ struct GloboplayApp: App {
 		}
 	}()
 
+	init() {
+		RequestProviderWrapper.setup(provider: URLSessionRequestProvider())
+	}
+
     var body: some Scene {
         WindowGroup {
             ContentView()

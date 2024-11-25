@@ -37,7 +37,7 @@ protocol Request {
 	var timeout: Double { get }
 	var isContentJson: Bool { get }
 	var decoder: JSONDecoder { get }
-	func request() async throws -> ReturnType
+	func request(withProvider provider: RequestProvider) async throws -> ReturnType
 }
 
 protocol RequestWithTransformation: Request {
@@ -58,8 +58,41 @@ extension Request {
 	}
 }
 
+protocol RequestProvider {
+	func data(for request: URLRequest) async throws -> (Data, URLResponse)
+}
+
+@propertyWrapper
+struct RequestProviderWrapper {
+
+	private static var provider: RequestProvider?
+
+	init() { }
+
+	var wrappedValue: RequestProvider {
+		guard let provider = Self.provider else {
+			fatalError("Need to provide a RequestProvider with RequestProviderWrapper.setup(provider:)")
+		}
+		return provider
+	}
+
+	static func setup(provider: RequestProvider) {
+		if Self.provider == nil {
+			Self.provider = provider
+		}
+	}
+}
+
+struct URLSessionRequestProvider: RequestProvider {
+	func data(for request: URLRequest) async throws -> (Data, URLResponse) {
+		try await URLSession.shared.data(for: request)
+	}
+}
+
 extension Request {
-	func request() async throws -> ReturnType {
+	func request(
+		withProvider provider: RequestProvider = RequestProviderWrapper().wrappedValue
+	) async throws -> ReturnType {
 		var stringURL = Network.Constants.baseURL
 		if let path = path, !path.isEmpty {
 			stringURL += "/" + path.joined(separator: "/")
@@ -88,7 +121,7 @@ extension Request {
 		}
 
 		do {
-			let (data, _) = try await URLSession.shared.data(for: urlRequest)
+			let (data, _) = try await provider.data(for: urlRequest)
 			#if DEBUG
 			print(String(decoding: data, as: UTF8.self))
 			#endif
