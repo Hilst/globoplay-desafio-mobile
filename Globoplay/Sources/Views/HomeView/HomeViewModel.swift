@@ -50,9 +50,9 @@ final class HomeViewModel: ObservableObject {
 		await MainActor.run { isLoading = true }
 
 		var newContents = Self.emptyContents()
-		try await saveContents(ofType: .movie, in: &newContents)
-		try await saveContents(ofType: .tvshow, in: &newContents)
-		try await saveContents(ofType: .soap, in: &newContents)
+		await saveContents(ofType: .movie, in: &newContents)
+		await saveContents(ofType: .tvshow, in: &newContents)
+		await saveContents(ofType: .soap, in: &newContents)
 		let merged = contents.merging(newContents) { current, new in
 			var current = current
 			current.nonRepeatingAppend(contentsOf: new)
@@ -60,7 +60,7 @@ final class HomeViewModel: ObservableObject {
 		}
 
 		await MainActor.run {
-			isEmpty = merged.isEmpty
+			isEmpty = merged.allSatisfy { $1.isEmpty }
 			contents = merged
 			isLoading = false
 		}
@@ -69,10 +69,10 @@ final class HomeViewModel: ObservableObject {
 	private func saveContents(
 		ofType type: PresentationType,
 		in contentsMap: inout [PresentationType: [ContentViewData]]
-	) async throws {
-		async let contents = try await DiscoverRequest(type: type)
+	) async {
+		async let contents = try? await DiscoverRequest(type: type)
 			.requestAndTransform()
 			.map { ContentViewData(content: $0) }
-		try await contentsMap[type]?.nonRepeatingAppend(contentsOf: contents)
+		await contentsMap[type]?.nonRepeatingAppend(contentsOf: contents ?? [])
 	}
 }
