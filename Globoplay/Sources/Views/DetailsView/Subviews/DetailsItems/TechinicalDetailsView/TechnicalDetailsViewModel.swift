@@ -19,13 +19,13 @@ final class TechnicalDetailsViewModel: ObservableObject {
 
 		private var localizationKey: String {
 			switch self {
-			case .originalTile: "techdetail.label.originaltitle"// "Título Original"
-			case .genresConcatened: "techdetail.label.genre" //"Gênero"
-			case .episodesNumber:"techdetail.label.episodesnum" // "Episódios"
-			case .yearOfProduction:"techdetail.label.year" // "Ano de Produção"
-			case .country:"techdetail.label.country" // "País"
-			case .directorsNames: "techdetail.label.directors" // "Direção"
-			case .castConcatened: "techdetail.label.cast" // "Elenco"
+			case .originalTile: "techdetail.label.originaltitle"
+			case .genresConcatened: "techdetail.label.genre"
+			case .episodesNumber:"techdetail.label.episodesnum"
+			case .yearOfProduction:"techdetail.label.year"
+			case .country:"techdetail.label.country"
+			case .directorsNames: "techdetail.label.directors"
+			case .castConcatened: "techdetail.label.cast"
 			}
 		}
 
@@ -50,7 +50,7 @@ final class TechnicalDetailsViewModel: ObservableObject {
 	func updateDetails() async throws {
 		await MainActor.run { isLoading = true }
 
-		async let details = try? await SpecifDetailsRequest(content: viewData.content).requestAndTransform()
+		async let details = try? await DetailsRequest(content: viewData.content).requestAndTransform()
 
 		var productionYear: Int? = nil
 		if let releaseDateString = viewData.content.releaseDate,

@@ -1,5 +1,5 @@
 //
-//  SuggestionsRequest.swift
+//  RecommendationsRequest.swift
 //  Globoplay
 //
 //  Created by Felipe Hilst on 23/11/24.

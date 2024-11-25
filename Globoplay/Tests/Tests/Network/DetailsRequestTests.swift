@@ -1,5 +1,5 @@
 //
-//  SpecifDetailsRequestTests.swift
+//  DetailsRequestTests.swift
 //  Globoplay
 //
 //  Created by Felipe Hilst on 25/11/24.
@@ -9,7 +9,7 @@ import XCTest
 
 @testable import Globoplay
 
-final class SpecifDetailsRequestTests: XCTestCase {
+final class DetailsRequestTests: XCTestCase {
 
 	override class func setUp() {
 		RequestProviderMock.setup()
@@ -19,15 +19,15 @@ final class SpecifDetailsRequestTests: XCTestCase {
 		RequestProviderMock.instance.reset()
 	}
 
-	func testSpecificDetailsRequest() async throws {
+	func testDetailsRequest() async throws {
 		let encoder = JSONEncoder()
 		encoder.keyEncodingStrategy = .convertToSnakeCase
-		let response = SpecifDetailsDTO(id: 1, numberOfEpisodes: nil, originCountry: nil, credits: nil)
+		let response = DetailsDTO(id: 1, numberOfEpisodes: nil, originCountry: nil, credits: nil)
 		RequestProviderMock.instance.response = try encoder.encode(response)
 
 		let model = ContentModel(id: 1)
 		model.presentation = PresentationType.soap.rawValue
-		let result = try await SpecifDetailsRequest(content: model)
+		let result = try await DetailsRequest(content: model)
 			.requestAndTransform(withProvider: RequestProviderMock.instance)
 
 		let requestMade = RequestProviderMock.instance.spyArray.first

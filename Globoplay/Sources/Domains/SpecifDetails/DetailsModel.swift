@@ -1,11 +1,11 @@
 //
-//  SpecifDetailsDTO.swift
+//  DetailsDTO.swift
 //  Globoplay
 //
 //  Created by Felipe Hilst on 23/11/24.
 //
 
-struct SpecifDetailsDTO: Codable {
+struct DetailsDTO: Codable {
 	let id: Int
 	let numberOfEpisodes: Int?
 	let originCountry: [String]?
@@ -23,14 +23,14 @@ struct SpecifDetailsDTO: Codable {
 	}
 }
 
-struct SpecifDetailsModel {
+struct DetailsModel {
 	let id: Int
 	let numberOfEpisodes: Int?
 	let firstOriginCountry: String?
 	let directorsNames: [String]?
 	let castNames: [String]?
 
-	init(dto: SpecifDetailsDTO) {
+	init(dto: DetailsDTO) {
 		self.id = dto.id
 		self.numberOfEpisodes = dto.numberOfEpisodes
 		self.firstOriginCountry = dto.originCountry?.first
@@ -42,7 +42,7 @@ struct SpecifDetailsModel {
 	}
 
 	static let directorJobString = "Director"
-	private static func isDirector(_ crew: SpecifDetailsDTO.CreditsDTO.CrewDTO) -> Bool {
+	private static func isDirector(_ crew: DetailsDTO.CreditsDTO.CrewDTO) -> Bool {
 		crew.job == directorJobString
 	}
 }

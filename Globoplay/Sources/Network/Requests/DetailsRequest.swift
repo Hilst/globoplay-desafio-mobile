@@ -1,12 +1,12 @@
 //
-//  SpecifDetailsRequest.swift
+//  DetailsRequest.swift
 //  Globoplay
 //
 //  Created by Felipe Hilst on 23/11/24.
 //
 
-struct SpecifDetailsRequest: RequestWithTransformation {
-	typealias ReturnType = SpecifDetailsDTO
+struct DetailsRequest: RequestWithTransformation {
+	typealias ReturnType = DetailsDTO
 
 	let content: ContentModel
 
@@ -22,8 +22,8 @@ struct SpecifDetailsRequest: RequestWithTransformation {
 	let addtionalQuery: [String : String]? = [ "append_to_response": "credits" ]
 	let isContentJson: Bool = true
 
-	typealias TransformationResult = SpecifDetailsModel
-	func transformation(_ returned: SpecifDetailsDTO) -> SpecifDetailsModel {
-		SpecifDetailsModel(dto: returned)
+	typealias TransformationResult = DetailsModel
+	func transformation(_ returned: DetailsDTO) -> DetailsModel {
+		DetailsModel(dto: returned)
 	}
 }

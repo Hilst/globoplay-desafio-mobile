@@ -13,8 +13,8 @@ extension ContentDetailsItemsView {
 
 		private var localizationKey: String {
 			switch self {
-			case .suggestions: "suggestions.picker.value" // "ASSISTA TAMBÉM"
-			case .technicalDetails: "techdetails.picker.value" // "DETALHES"
+			case .suggestions: "suggestions.picker.value"
+			case .technicalDetails: "techdetails.picker.value"
 			}
 		}
 
