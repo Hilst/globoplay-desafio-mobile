@@ -1,33 +1,11 @@
 //
-//  Network.swift
+//  RequestProtocol.swift
 //  Globoplay
 //
-//  Created by Felipe Hilst on 21/11/24.
+//  Created by Felipe Hilst on 25/11/24.
 //
 
 import Foundation
-
-final class Network {
-	enum Constants {
-		enum ApiKey {
-			static let key = "api_key"
-		}
-		enum Language {
-			static let key = "language"
-			static var value = { String(localizationKey: "api.language.id") }()
-		}
-		static let globoplayCompaniesIdsQuery = "79744|13969|186381|195816|193977|201057|201059|179074|192377|203962|46430|222282|229042|233438|205328|195815|181914|7462|196151|181587|206373"
-		static let baseURL = "https://api.themoviedb.org/3"
-	}
-}
-
-enum RequestMethod: String {
-	case GET, POST
-}
-
-enum RequestError: Error {
-	case invalidURL, requestError(Error), decodeError(Error)
-}
 
 protocol Request {
 	associatedtype ReturnType: Decodable
@@ -43,7 +21,7 @@ protocol Request {
 protocol RequestWithTransformation: Request {
 	associatedtype TransformationResult
 	func transformation(_ returned: ReturnType) -> TransformationResult
-	func requestAndTransform() async throws -> TransformationResult
+	func requestAndTransform(withProvider provider: RequestProvider) async throws -> TransformationResult
 }
 
 extension Request {
@@ -55,37 +33,6 @@ extension Request {
 		let decoder = JSONDecoder()
 		decoder.keyDecodingStrategy = .convertFromSnakeCase
 		return decoder
-	}
-}
-
-protocol RequestProvider {
-	func data(for request: URLRequest) async throws -> (Data, URLResponse)
-}
-
-@propertyWrapper
-struct RequestProviderWrapper {
-
-	private static var provider: RequestProvider?
-
-	init() { }
-
-	var wrappedValue: RequestProvider {
-		guard let provider = Self.provider else {
-			fatalError("Need to provide a RequestProvider with RequestProviderWrapper.setup(provider:)")
-		}
-		return provider
-	}
-
-	static func setup(provider: RequestProvider) {
-		if Self.provider == nil {
-			Self.provider = provider
-		}
-	}
-}
-
-struct URLSessionRequestProvider: RequestProvider {
-	func data(for request: URLRequest) async throws -> (Data, URLResponse) {
-		try await URLSession.shared.data(for: request)
 	}
 }
 
@@ -134,8 +81,10 @@ extension Request {
 }
 
 extension RequestWithTransformation {
-	func requestAndTransform() async throws -> TransformationResult {
-		let returned = try await request()
+	func requestAndTransform(
+		withProvider provider: RequestProvider = RequestProviderWrapper().wrappedValue
+	) async throws -> TransformationResult {
+		let returned = try await request(withProvider: provider)
 		return transformation(returned)
 	}
 }

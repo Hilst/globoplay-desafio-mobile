@@ -58,7 +58,7 @@ final class ContentModel: Equatable {
 	}
 }
 
-struct ContentDTO: Decodable {
+struct ContentDTO: Codable {
 	let id: Int
 	let title: String?
 	let originalTitle: String?

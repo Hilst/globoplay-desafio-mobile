@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ContentWrapper: Decodable {
+struct ContentWrapper: Codable {
 	let results: [ContentDTO]
 }
 
