@@ -57,3 +57,16 @@ targets:
       properties:
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         CFBundleShortVersionString: $(MARKETING_VERSION)
+
+schemes:
+  Globoplay:
+    build:
+      targets:
+        Globoplay: all
+        GloboplayTests: [test]
+    test:
+      gatherCoverageData: true
+      coverageTargets:
+        - Globoplay
+      targets:
+        - name: GloboplayTests
