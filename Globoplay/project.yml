@@ -57,20 +57,3 @@ targets:
       properties:
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         CFBundleShortVersionString: $(MARKETING_VERSION)
-
-  GloboplayUITests:
-    type: bundle.ui-testing
-    platform: iOS
-    sources: 
-      - UITests
-    dependencies:
-      - target: Globoplay
-    settings:
-      base:
-        ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES: YES
-        DEVELOPMENT_TEAM: 7QSV5W38SD # TROCAR PELO SEU DEVELOPMENT TEAM
-    info:
-      path: UITests/Info.plist
-      properties:
-        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
-        CFBundleShortVersionString: $(MARKETING_VERSION)

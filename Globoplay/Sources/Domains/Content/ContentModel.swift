@@ -28,6 +28,7 @@ final class ContentModel: Equatable {
 		id: Int,
 		title: String? = nil,
 		originalTitle: String? = nil,
+		overview: String? = nil,
 		genreIds: [Int]? = nil,
 		originalLanguage: String? = nil,
 		posterPath: String? = nil,
@@ -36,6 +37,7 @@ final class ContentModel: Equatable {
 		self.id = id
 		self.title = title
 		self.originalTitle = originalTitle
+		self.overview = overview
 		self.genreIds = genreIds
 		self.originalLanguage = originalLanguage
 		self.posterPath = posterPath
@@ -43,14 +45,16 @@ final class ContentModel: Equatable {
 	}
 
 	convenience init(dto: ContentDTO) {
-		self.init(id: dto.id)
-		self.title = dto.title ?? dto.name
-		self.originalTitle = dto.originalTitle ?? dto.originalName
-		self.overview = dto.overview
-		self.genreIds = dto.genreIds
-		self.originalLanguage = dto.originalLanguage
-		self.posterPath = dto.posterPath
-		self.releaseDate = dto.releaseDate ?? dto.firstAirDate
+		self.init(
+			id: dto.id,
+			title: dto.title ?? dto.name,
+			originalTitle: dto.originalTitle ?? dto.originalName,
+			overview: dto.overview,
+			genreIds: dto.genreIds,
+			originalLanguage: dto.originalLanguage,
+			posterPath: dto.posterPath,
+			releaseDate: dto.releaseDate ?? dto.firstAirDate
+		)
 	}
 }
 
